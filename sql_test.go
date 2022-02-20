@@ -26,3 +26,22 @@ func TestExecSql(t *testing.T) {
 	fmt.Println("Success insert new customer")
 	fmt.Println(result)
 }
+
+func TestQuerySql(t *testing.T) {
+	// get sql connection
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	query := "SELECT * FROM customer"
+
+	// Execute the query
+	rows, err := db.QueryContext(ctx, query)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	fmt.Println("Success query all customer")
+}
