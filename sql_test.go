@@ -2,6 +2,7 @@ package golang_database
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"testing"
 	"time"
@@ -74,21 +75,31 @@ func TestQuerySqlComplex(t *testing.T) {
 
 	for rows.Next() {
 		var (
-			id, name, email      string
-			balance              int32
-			rating               float64
-			birthDate, createdAt time.Time
-			married              bool
+			id, name  string
+			email     sql.NullString
+			balance   int32
+			rating    float64
+			birthDate sql.NullTime
+			createdAt time.Time
+			married   bool
 		)
 		err = rows.Scan(&id, &name, &email, &balance, &rating, &birthDate, &married, &createdAt)
 		if err != nil {
 			panic(err)
 		}
 		fmt.Println("==========================")
-		fmt.Println("Id:", id, "| Name:", name)
-		fmt.Println("Email:", email, "| Balance:")
-		fmt.Println("Rating:", rating, "| Birth Date:", birthDate)
-		fmt.Println("Maried:", married, "| Created At:", createdAt)
+		fmt.Println("Id:", id)
+		fmt.Println("Name:", name)
+		if email.Valid {
+			fmt.Println("Email:", email.String)
+		}
+		fmt.Println("Balance:", balance)
+		fmt.Println("Rating:", rating)
+		if birthDate.Valid {
+			fmt.Println("Birth Date:", birthDate.Time)
+		}
+		fmt.Println("Married:", married)
+		fmt.Println("Created At:", createdAt)
 	}
 
 	fmt.Println("Success query all customer")
