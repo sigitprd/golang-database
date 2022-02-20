@@ -43,5 +43,14 @@ func TestQuerySql(t *testing.T) {
 	}
 	defer rows.Close()
 
+	for rows.Next() {
+		var id, name string
+		err = rows.Scan(&id, &name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Id:", id, "| Name:", name)
+	}
+
 	fmt.Println("Success query all customer")
 }
