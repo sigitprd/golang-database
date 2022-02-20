@@ -9,7 +9,7 @@ import (
 
 func GetConnection() *sql.DB {
 	// make sql connection
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/golang_database")
+	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/golang_database?parseTime=true")
 
 	if err != nil {
 		panic(err)
