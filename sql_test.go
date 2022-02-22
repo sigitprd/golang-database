@@ -223,3 +223,20 @@ func TestAutoIncrement(t *testing.T) {
 
 	fmt.Println("Success insert new comment with id :", insertId)
 }
+
+func TestPrepareStatement(t *testing.T) {
+	// get sql connection
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	query := "INSERT INTO user (username, password) VALUES (?, ?)"
+
+	// Prepare statement
+	stmt, err := db.PrepareContext(ctx, query)
+	if err != nil {
+		panic(err)
+	}
+	defer stmt.Close()
+}
