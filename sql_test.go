@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -231,7 +232,7 @@ func TestPrepareStatement(t *testing.T) {
 
 	ctx := context.Background()
 
-	query := "INSERT INTO user (username, password) VALUES (?, ?)"
+	query := "INSERT INTO comments (email, comment) VALUES (?, ?)"
 
 	// Prepare statement
 	stmt, err := db.PrepareContext(ctx, query)
@@ -239,4 +240,16 @@ func TestPrepareStatement(t *testing.T) {
 		panic(err)
 	}
 	defer stmt.Close()
+
+	for i := 0; i < 10; i++ {
+		email := "sigit" + strconv.Itoa(i) + "@gmail.com"
+		comment := "Test Comment -" + strconv.Itoa(i)
+		result, err := stmt.ExecContext(ctx, email, comment)
+		if err != nil {
+			panic(err)
+		}
+		lastInsertId, _ := result.LastInsertId()
+		fmt.Println("Comment Id:", lastInsertId)
+	}
+
 }
